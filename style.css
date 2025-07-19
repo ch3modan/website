@@ -1,0 +1,86 @@
+/* style.css */
+
+/* Import Tailwind CSS base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for the portfolio */
+
+/* General body styling for full height and overflow */
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Prevent overall scrolling, main content handles it */
+}
+
+/* Ensure main content area takes available height and handles its own scrolling */
+#scrollContainer {
+    height: calc(100vh - 64px); /* Adjust based on header height, if fixed */
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Header styling */
+#mainHeader {
+    /* Tailwind classes are applied directly in HTML for simplicity with CDN */
+    /* Example: bg-gray-900/90 shadow-lg shadow-black/20 border-b border-gray-800 */
+}
+
+/* Section styling */
+section {
+    /* Tailwind classes are applied directly in HTML for simplicity with CDN */
+    /* Example: relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6 */
+}
+
+/* Section title styling */
+h2 {
+    /* Tailwind classes are applied directly in HTML for simplicity with CDN */
+    /* Example: text-3xl md:text-4xl font-bold mb-12 text-center relative text-white */
+}
+
+/* Project card styling */
+.project-card {
+    /* Tailwind classes are applied directly in HTML for simplicity with CDN */
+    /* Example: bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden */
+}
+
+/* Skill pill styling */
+.skill-pill {
+    /* Tailwind classes are applied directly in HTML for simplicity with CDN */
+    /* Example: bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full */
+}
+
+/* Specific styles for the generative critter canvas */
+.generative-critter-canvas {
+    image-rendering: pixelated; /* For crisp pixel art */
+}
+
+/* Critter Corner bubble styling */
+.critter-bubble {
+    /* Tailwind classes are applied directly in HTML for simplicity with CDN */
+    /* Example: relative bg-white text-gray-800 p-4 rounded-lg shadow-lg max-w-xs font-mono border-2 border-green-400 */
+}
+
+/* Barnsley Fern Canvas */
+#barnsleyFernCanvas {
+    background-color: transparent; /* Ensure it's transparent to show other layers */
+}
+
+/* Floating Critters Container */
+#floatingCritters {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Individual floating critter */
+.floating-critter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allow clicks to pass through */
+}
