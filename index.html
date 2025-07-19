@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iaroslav Kosaretskii - Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Inter font globally */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a202c; /* gray-900 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10B981; /* green-500 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #059669; /* green-600 */
+        }
+        /* Hide scrollbar for specific elements if needed, e.g., main scroll container */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* Keyframe for wiggle animation */
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(-3deg); }
+          50% { transform: rotate(3deg); }
+        }
+        .animate-wiggle {
+          animation: wiggle 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300 font-sans leading-normal tracking-normal h-screen w-screen flex flex-col overflow-hidden">
+    <!-- Background Layer: Fixed and non-interactive -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <canvas id="barnsleyFernCanvas" class="w-full h-full"></canvas>
+        <div id="floatingCritters" class="w-full h-full opacity-50"></div>
+    </div>
+
+    <!-- UI Layer: Fixed interactive elements -->
+    <div class="relative z-40">
+        <header id="mainHeader" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-transparent">
+            <nav class="max-w-5xl mx-auto px-6 py-3 flex justify-between items-center">
+                <a href="#home" class="text-xl font-bold text-white flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code text-green-400"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span class="hidden sm:inline">Iaroslav Kosaretskii</span>
+                </a>
+                <div class="hidden md:flex items-center gap-2 bg-gray-800/50 border border-gray-700 rounded-full px-2 py-1">
+                    <a href="#home" class="nav-link flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 text-gray-300 hover:bg-gray-700 hover:text-white" data-section="home">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        Home
+                    </a>
+                    <a href="#about" class="nav-link flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 text-gray-300 hover:bg-gray-700 hover:text-white" data-section="about">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        About
+                    </a>
+                    <a href="#projects" class="nav-link flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 text-gray-300 hover:bg-gray-700 hover:text-white" data-section="projects">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        Projects
+                    </a>
+                    <a href="#contact" class="nav-link flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 text-gray-300 hover:bg-gray-700 hover:text-white" data-section="contact">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        Contact
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/your-username" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                </div>
+            </nav>
+        </header>
+    </div>
+    <div id="critterCorner"></div>
+
+    <!-- Content Layer: The main scrollable part of the page -->
+    <main id="scrollContainer" class="relative z-10 flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar">
+        <!-- Hero Section -->
+        <section id="home" class="relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6 min-h-screen flex items-center justify-center text-center">
+            <div class="relative">
+                <div class="absolute -inset-2 bg-gradient-to-r from-green-600 to-cyan-600 rounded-lg blur-xl opacity-20"></div>
+                <div class="relative bg-gray-900 bg-opacity-80 backdrop-blur-md border border-gray-700 rounded-lg p-8 md:p-16">
+                    <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white tracking-tighter mb-4">Iaroslav Kosaretskii</h1>
+                    <p class="text-lg md:text-xl text-green-300 font-mono">Aspiring Bioinformatician & Programming Enthusiast</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center relative text-white">About Me<span class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-green-400"></span></h2>
+            <div class="grid md:grid-cols-5 gap-12 items-start">
+                <div class="md:col-span-3 bg-gray-900/50 p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-2xl font-bold text-white mb-4">Who I Am</h3>
+                    <p class="text-gray-400 leading-relaxed">I am a dedicated student pursuing a Bachelor's degree in Bioinformatics at Johann Wolfgang Goethe-University Frankfurt am Main. With a strong foundation in both programming and academic excellence, I bring a blend of technical skills and scientific curiosity to my bioinformatics projects.</p>
+                </div>
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                        <h3 class="text-xl font-bold text-white mb-4">Education</h3>
+                        <p class="font-semibold text-green-400">Bachelor in Bioinformatics</p>
+                        <p class="text-gray-400">Johann Wolfgang Goethe-University Frankfurt am Main</p>
+                        <p class="text-gray-500 text-sm">2024-2027</p>
+                    </div>
+                    <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                        <h3 class="text-xl font-bold text-white mb-4">Languages</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">Russian (Native)</div>
+                            <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">German (C1)</div>
+                            <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">English (C1)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-white mb-6 text-center">My Tech Stack & Skills</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">Python</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">NumPy</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">Pandas</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">Linux Administration</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">Git</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">HTML/CSS</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">React</div>
+                    <div class="bg-gray-800 border border-gray-700 text-green-300 text-sm font-mono py-1.5 px-4 rounded-full shadow-md transition-all duration-300 hover:bg-green-900 hover:text-white hover:shadow-lg hover:shadow-green-500/20">JavaScript</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center relative text-white">My Projects<span class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-green-400"></span></h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card 1 -->
+                <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold text-white mb-2">Project One: Bio-Data Analyzer</h3>
+                        <p class="text-gray-400 mb-4 text-sm flex-grow">A command-line tool developed in Python using Pandas and NumPy to process and analyze large biological datasets efficiently.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Python</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Pandas</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">NumPy</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">CLI</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/50 px-6 py-4 flex justify-end items-center gap-4">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
+                            Code
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            Live Demo
+                        </a>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold text-white mb-2">Project Two: Personal Portfolio Website</h3>
+                        <p class="text-gray-400 mb-4 text-sm flex-grow">This very website, built with React and Tailwind CSS to create a modern, responsive, and professional online presence.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">React</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Tailwind CSS</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">JavaScript</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">HTML</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/50 px-6 py-4 flex justify-end items-center gap-4">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
+                            Code
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            Live Demo
+                        </a>
+                    </div>
+                </div>
+                <!-- Project Card 3 -->
+                <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold text-white mb-2">Project Three: Coming Soon</h3>
+                        <p class="text-gray-400 mb-4 text-sm flex-grow">I am currently working on a new project that involves machine learning for protein structure prediction. More details will be available soon!</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Machine Learning</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Bioinformatics</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">In Progress</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/50 px-6 py-4 flex justify-end items-center gap-4">
+                        <!-- No links for coming soon project -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center relative text-white">Get In Touch<span class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-green-400"></span></h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-white">Let's Connect</h3>
+                    <p class="text-gray-400">I'm currently seeking new opportunities and am open to collaborations. Feel free to reach out if you have a project in mind, want to discuss bioinformatics, or just want to say hello!</p>
+                    <div class="space-y-4 pt-4">
+                        <a href="mailto:cheemsthedoge@gmail.com" class="flex items-center gap-4 text-gray-300 hover:text-green-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-green-500"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            <span>cheemsthedoge@gmail.com</span>
+                        </a>
+                        <a href="tel:+491741848588" class="flex items-center gap-4 text-gray-300 hover:text-green-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone text-green-500"><path d="M22 16.92v3a2 2 0 0 1-2.18 2.02 15.79 15.79 0 0 1-8.82-5.55 15.79 15.79 0 0 1-5.55-8.82A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <span>+49 174 184 8588</span>
+                        </a>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin text-green-500"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span>Frankfurt am Main, Germany</span>
+                        </div>
+                    </div>
+                </div>
+                <form name="contact" method="POST" data-netlify="true" class="bg-gray-900/50 p-8 rounded-lg border border-gray-800 space-y-4">
+                    <input type="hidden" name="form-name" value="contact" />
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-400 mb-1">Your Name</label>
+                        <input type="text" id="name" name="name" required class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-400 mb-1">Your Email</label>
+                        <input type="email" id="email" name="email" required class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-400 mb-1">Message</label>
+                        <textarea id="message" name="message" rows="4" required class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-green-500 text-gray-900 font-bold py-3 px-6 rounded-full transition-transform duration-300 hover:scale-105 shadow-lg shadow-green-500/20">Send Message</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-800">
+            <div class="max-w-5xl mx-auto py-6 px-6 text-center text-gray-500">
+                <div class="flex justify-center gap-6 mb-4">
+                    <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/your-username" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="mailto:cheemsthedoge@gmail.com" class="text-gray-400 hover:text-green-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    </a>
+                </div>
+                <p class="text-sm">&copy; 2025 Iaroslav Kosaretskii. All Rights Reserved.</p>
+                <p class="text-xs mt-2 font-mono">Built with HTML, CSS & JavaScript</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
