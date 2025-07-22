@@ -48,6 +48,32 @@
         .animate-wiggle {
           animation: wiggle 3s ease-in-out infinite;
         }
+
+        /* Game of Life Canvas Styling */
+        #gameOfLifeCanvas {
+            cursor: pointer;
+            border: 1px solid #374151; /* gray-700 */
+            border-radius: 0.5rem;
+        }
+        
+        /* Styles from original style.css for completeness */
+        .generative-critter-canvas {
+            image-rendering: pixelated; /* For crisp pixel art */
+        }
+        #floatingCritters {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+        .floating-critter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-300 font-sans leading-normal tracking-normal h-screen w-screen flex flex-col overflow-hidden">
@@ -87,7 +113,7 @@
                     <a href="https://github.com/ch3modan" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
                     </a>
-                    <a href="www.linkedin.com/in/iaroslav-kosaretskii-b75844327" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
+                    <a href="https://www.linkedin.com/in/iaroslav-kosaretskii-b75844327" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                     </a>
                 </div>
@@ -153,10 +179,28 @@
         <section id="projects" class="relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6">
             <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center relative text-white">My Projects<span class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-green-400"></span></h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project Card 1 -->
+                <!-- Project Card 1: Game of Life -->
                 <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
                     <div class="p-6 flex-grow">
-                        <h3 class="text-xl font-bold text-white mb-2">Project One: Bio-Data Analyzer</h3>
+                        <h3 class="text-xl font-bold text-white mb-2">Conway's Game of Life</h3>
+                        <p class="text-gray-400 mb-4 text-sm flex-grow">An interactive simulation of Conway's Game of Life, a cellular automaton that creates complex patterns from simple rules. Click on the canvas to create life!</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">JavaScript</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">HTML Canvas</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Algorithm</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800/50 px-6 py-4 flex justify-end items-center gap-4">
+                         <a href="#game-of-life" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            Try It Out
+                        </a>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold text-white mb-2">Bio-Data Analyzer</h3>
                         <p class="text-gray-400 mb-4 text-sm flex-grow">A command-line tool developed in Python using Pandas and NumPy to process and analyze large biological datasets efficiently.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Python</span>
@@ -170,22 +214,17 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
                             Code
                         </a>
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                            Live Demo
-                        </a>
                     </div>
                 </div>
-                <!-- Project Card 2 -->
+                <!-- Project Card 3 -->
                 <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
                     <div class="p-6 flex-grow">
-                        <h3 class="text-xl font-bold text-white mb-2">Project Two: Personal Portfolio Website</h3>
-                        <p class="text-gray-400 mb-4 text-sm flex-grow">This very website, built with React and Tailwind CSS to create a modern, responsive, and professional online presence.</p>
+                        <h3 class="text-xl font-bold text-white mb-2">Personal Portfolio Website</h3>
+                        <p class="text-gray-400 mb-4 text-sm flex-grow">This very website, built with HTML, Tailwind, and vanilla JS to create a modern, responsive, and professional online presence.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">React</span>
+                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">HTML</span>
                             <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Tailwind CSS</span>
                             <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">JavaScript</span>
-                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">HTML</span>
                         </div>
                     </div>
                     <div class="bg-gray-800/50 px-6 py-4 flex justify-end items-center gap-4">
@@ -193,27 +232,32 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
                             Code
                         </a>
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                            Live Demo
-                        </a>
                     </div>
                 </div>
-                <!-- Project Card 3 -->
-                <div class="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-green-900/30 hover:border-green-700 flex flex-col">
-                    <div class="p-6 flex-grow">
-                        <h3 class="text-xl font-bold text-white mb-2">Project Three: Coming Soon</h3>
-                        <p class="text-gray-400 mb-4 text-sm flex-grow">I am currently working on a new project that involves machine learning for protein structure prediction. More details will be available soon!</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Machine Learning</span>
-                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">Bioinformatics</span>
-                            <span class="text-xs font-mono bg-gray-800 text-cyan-300 py-1 px-3 rounded-full">In Progress</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-800/50 px-6 py-4 flex justify-end items-center gap-4">
-                        <!-- No links for coming soon project -->
-                    </div>
+            </div>
+        </section>
+
+        <!-- Game of Life Section -->
+        <section id="game-of-life" class="relative w-full max-w-5xl mx-auto py-16 md:py-24 px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 relative text-white">Interactive Game of Life<span class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-green-400"></span></h2>
+            <div class="bg-gray-900/50 p-4 sm:p-8 rounded-lg border border-gray-800 inline-block">
+                <canvas id="gameOfLifeCanvas"></canvas>
+                <div class="mt-6 flex flex-wrap justify-center items-center gap-4">
+                    <button id="gol-start-pause" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full transition-all duration-200 shadow-lg shadow-green-500/20 flex items-center gap-2">
+                        <svg id="gol-play-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <svg id="gol-pause-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause hidden"><rect width="4" height="16" x="6" y="4"/><rect width="4" height="16" x="14" y="4"/></svg>
+                        <span id="gol-start-pause-text">Start</span>
+                    </button>
+                    <button id="gol-reset" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full transition-all duration-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                        Reset
+                    </button>
+                    <button id="gol-randomize" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full transition-all duration-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shuffle"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2l.7 1.2c.7 1.3 2.1 2.2 3.6 2.2h2.2"/><path d="m18 22-4-4 4-4"/></svg>
+                        Randomize
+                    </button>
                 </div>
+                 <p class="text-gray-500 text-sm mt-4 font-mono">Click on the grid to bring cells to life!</p>
             </div>
         </section>
 
@@ -261,7 +305,7 @@
                     <a href="https://github.com/ch3modan" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.5 0 4.1-2.2 4.1-4.9V8.6c0-1.5-.7-2.9-2.2-3.8A7.6 7.6 0 0 0 12 2a7.6 7.6 0 0 0-2.8.6c-1.5.9-2.2 2.3-2.2 3.8V8.6c0 2.7.6 4.9 4.1 4.9a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-3.3-1-4.3-4.5-4.3-4.5"/><path d="M15 18c3.3-1 4.3-4.5 4.3-4.5"/></svg>
                     </a>
-                    <a href="www.linkedin.com/in/iaroslav-kosaretskii-b75844327" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
+                    <a href="https://www.linkedin.com/in/iaroslav-kosaretskii-b75844327" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-green-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                     </a>
                     <a href="mailto:cheemsthedoge@gmail.com" class="text-gray-400 hover:text-green-400 transition-colors">
@@ -275,10 +319,453 @@
     </main>
 
     <!-- Custom JavaScript -->
-    <script src="script.js"></script>
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Main App Logic from original script.js ---
+            const mainHeader = document.getElementById('mainHeader');
+            const scrollContainer = document.getElementById('scrollContainer');
+            const navLinksElements = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            let isScrolled = false;
+            let activeSection = 'home';
+
+            const handleScroll = () => {
+                // Header scroll effect
+                const scrolled = scrollContainer.scrollTop > 10;
+                if (scrolled !== isScrolled) {
+                    isScrolled = scrolled;
+                    if (isScrolled) {
+                        mainHeader.classList.add('bg-gray-900/90', 'shadow-lg', 'shadow-black/20', 'border-b', 'border-gray-800');
+                        mainHeader.classList.remove('bg-transparent');
+                    } else {
+                        mainHeader.classList.remove('bg-gray-900/90', 'shadow-lg', 'shadow-black/20', 'border-b', 'border-gray-800');
+                        mainHeader.classList.add('bg-transparent');
+                    }
+                }
+
+                // Active navigation link highlighting
+                const scrollPosition = scrollContainer.scrollTop + window.innerHeight / 2; // Mid-viewport scroll position
+
+                sections.forEach(section => {
+                    if (scrollPosition >= section.offsetTop && scrollPosition < section.offsetTop + section.offsetHeight) {
+                        const currentSectionId = section.id;
+                        if (currentSectionId !== activeSection) {
+                            activeSection = currentSectionId;
+                            navLinksElements.forEach(link => {
+                                if (link.dataset.section === activeSection) {
+                                    link.classList.add('bg-green-500', 'text-gray-900');
+                                    link.classList.remove('text-gray-300', 'hover:bg-gray-700', 'hover:text-white');
+                                } else {
+                                    link.classList.remove('bg-green-500', 'text-gray-900');
+                                    link.classList.add('text-gray-300', 'hover:bg-gray-700', 'hover:text-white');
+                                }
+                            });
+                        }
+                    }
+                });
+            };
+
+            if (scrollContainer) {
+                scrollContainer.addEventListener('scroll', handleScroll);
+                handleScroll();
+            }
+
+            // --- Generative Critter Component ---
+            function createGenerativeCritter(container, seed) {
+                const canvas = document.createElement('canvas');
+                canvas.className = "w-full h-full generative-critter-canvas";
+                container.appendChild(canvas);
+                const ctx = canvas.getContext('2d');
+                const size = 10;
+                canvas.width = size;
+                canvas.height = size;
+
+                let currentSeed = seed;
+                let random = () => {
+                    var x = Math.sin(currentSeed++) * 10000;
+                    return x - Math.floor(x);
+                };
+
+                const r = Math.floor(random() * 256);
+                const g = Math.floor(random() * 256);
+                const b = Math.floor(random() * 256);
+                const bodyColor = `rgb(${r}, ${g}, ${b})`;
+                const accentColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+
+                ctx.clearRect(0, 0, size, size);
+                for (let y = 0; y < size; y++) {
+                    for (let x = 0; x < Math.ceil(size / 2); x++) {
+                        if (random() > 0.5) {
+                            ctx.fillStyle = bodyColor;
+                            ctx.fillRect(x, y, 1, 1);
+                            ctx.fillRect(size - 1 - x, y, 1, 1);
+                        }
+                    }
+                }
+                if (random() > 0.3) {
+                    const eyeX = Math.floor(random() * (size / 2 - 1)) + 1;
+                    const eyeY = Math.floor(random() * (size - 2)) + 1;
+                    ctx.fillStyle = accentColor;
+                    ctx.fillRect(eyeX, eyeY, 1, 1);
+                    ctx.fillRect(size - 1 - eyeX, eyeY, 1, 1);
+                }
+            }
+
+            // --- Critter Corner ---
+            const critterGreetings = ["Welcome to the digital ecosystem!", "Analyzing visitor data... you seem friendly.", "01001000 01100101 01101100 01101100 01101111!", "I was just generated. What are the odds?", "Greetings, carbon-based lifeform."];
+
+            function setupCritterCorner() {
+                const critterCornerDiv = document.getElementById('critterCorner');
+                if (!critterCornerDiv) return;
+
+                let bubbleVisible = false;
+                let critterSeed = Math.random();
+                let greeting = critterGreetings[Math.floor(Math.random() * critterGreetings.length)];
+
+                const renderCritterCorner = () => {
+                    critterCornerDiv.innerHTML = `
+                        <div class="fixed bottom-4 right-4 z-50 flex items-end gap-3 pointer-events-none">
+                            <div id="critterBubble" class="transition-all duration-500 ${bubbleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}">
+                                <div class="relative bg-white text-gray-800 p-4 rounded-lg shadow-lg max-w-xs font-mono border-2 border-green-400 pointer-events-auto">
+                                    <p class="text-sm">${greeting}</p>
+                                    <div class="absolute right-0 bottom-2 transform translate-x-1/2 rotate-45 w-4 h-4 bg-white border-r-2 border-b-2 border-green-400"></div>
+                                    <button id="closeCritterBubble" class="absolute top-1 right-1 text-gray-400 hover:text-gray-800" aria-label="Close greeting">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="critterCanvasContainer" class="w-24 h-24 cursor-pointer transition-transform duration-300 hover:scale-110 animate-wiggle pointer-events-auto" title="Say hi!"></div>
+                        </div>
+                    `;
+
+                    const critterCanvasContainer = document.getElementById('critterCanvasContainer');
+                    if (critterCanvasContainer) {
+                        critterCanvasContainer.innerHTML = ''; // Clear previous critter
+                        createGenerativeCritter(critterCanvasContainer, critterSeed);
+                        critterCanvasContainer.onclick = () => {
+                            bubbleVisible = !bubbleVisible;
+                            renderCritterCorner();
+                        };
+                    }
+
+                    const closeButton = document.getElementById('closeCritterBubble');
+                    if (closeButton) {
+                        closeButton.onclick = () => {
+                            bubbleVisible = false;
+                            renderCritterCorner();
+                        };
+                    }
+                    lucide.createIcons(); // Re-create icons after DOM update
+                };
+
+                setTimeout(() => {
+                    critterCornerDiv.style.display = 'block'; // Make visible
+                    setTimeout(() => {
+                        bubbleVisible = true;
+                        renderCritterCorner();
+                    }, 1000); // Delay bubble appearance
+                }, 1500); // Delay critter appearance
+
+                renderCritterCorner(); // Initial render
+            }
+
+            // --- Barnsley Fern Bush Background ---
+            function setupBarnsleyFernCanvas() {
+                const canvas = document.getElementById('barnsleyFernCanvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let animationFrameId;
+
+                const resizeCanvas = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                };
+
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                const numFerns = 8;
+                const ferns = [];
+                const edges = ['left', 'right', 'top', 'bottom'];
+
+                for (let i = 0; i < numFerns; i++) {
+                    const edge = edges[i % 4]; // Cycle through edges to get variety
+                    let originX, originY, rotation;
+
+                    switch (edge) {
+                        case 'left':
+                            originX = 0;
+                            originY = Math.random() * canvas.height;
+                            rotation = -Math.PI / 2; // Pointing right
+                            break;
+                        case 'right':
+                            originX = canvas.width;
+                            originY = Math.random() * canvas.height;
+                            rotation = Math.PI / 2; // Pointing left
+                            break;
+                        case 'top':
+                            originX = Math.random() * canvas.width;
+                            originY = 0;
+                            rotation = Math.PI; // Pointing down
+                            break;
+                        case 'bottom':
+                        default:
+                            originX = Math.random() * canvas.width;
+                            originY = canvas.height;
+                            rotation = 0; // Pointing up
+                            break;
+                    }
+
+                    ferns.push({
+                        x: 0,
+                        y: 0,
+                        originX: originX,
+                        originY: originY,
+                        rotation: rotation,
+                        scale: Math.random() * 0.8 + 0.6, // Slightly larger for a "closer" feel
+                        color: `rgba(57, ${Math.floor(Math.random() * 100 + 155)}, 20, 0.5)`
+                    });
+                }
+
+                const drawPoint = (fern) => {
+                    ctx.fillStyle = fern.color;
+                    const canvasScale = canvas.height / 10; // Adjust overall size of ferns
+
+                    // Apply rotation to the point
+                    const cosR = Math.cos(fern.rotation);
+                    const sinR = Math.sin(fern.rotation);
+                    const rotatedX = fern.x * cosR - fern.y * sinR;
+                    const rotatedY = fern.x * sinR + fern.y * cosR;
+                    
+                    // The fern naturally grows "up" (positive Y). For canvas, positive Y is down.
+                    // So we subtract the Y component to make it grow up on the screen.
+                    const px = fern.originX + (rotatedX * canvasScale * fern.scale);
+                    const py = fern.originY - (rotatedY * canvasScale * fern.scale);
+                    
+                    ctx.fillRect(px, py, 1, 1);
+                };
+
+                const nextPoint = (fern) => {
+                    const r = Math.random();
+                    let nextX, nextY;
+                    if (r < 0.01) {
+                        nextX = 0;
+                        nextY = 0.16 * fern.y;
+                    } else if (r < 0.86) {
+                        nextX = 0.85 * fern.x + 0.04 * fern.y;
+                        nextY = -0.04 * fern.x + 0.85 * fern.y + 1.6;
+                    } else if (r < 0.93) {
+                        nextX = 0.2 * fern.x - 0.26 * fern.y;
+                        nextY = 0.23 * fern.x + 0.22 * fern.y + 1.6;
+                    } else {
+                        nextX = -0.15 * fern.x + 0.28 * fern.y;
+                        nextY = 0.26 * fern.x + 0.24 * fern.y + 0.44;
+                    }
+                    fern.x = nextX;
+                    fern.y = nextY;
+                };
+
+                const render = () => {
+                    ferns.forEach(fern => {
+                        // Draw a batch of points for each fern per frame for performance
+                        for (let i = 0; i < 25; i++) {
+                            drawPoint(fern);
+                            nextPoint(fern);
+                        }
+                    });
+                    animationFrameId = requestAnimationFrame(render);
+                };
+                render();
+            }
+
+            // --- Floating Critters ---
+            function setupFloatingCritters() {
+                const container = document.getElementById('floatingCritters');
+                if (!container) return;
+
+                const critters = [];
+                const numCritters = 15;
+
+                for (let i = 0; i < numCritters; i++) {
+                    const size = Math.random() * 40 + 20;
+                    const critterEl = document.createElement('div');
+                    critterEl.className = 'floating-critter';
+                    critterEl.style.width = `${size}px`;
+                    critterEl.style.height = `${size}px`;
+                    container.appendChild(critterEl);
+
+                    const critter = {
+                        el: critterEl,
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        rotation: Math.random() * 360,
+                        rotationSpeed: (Math.random() - 0.5) * 0.2,
+                        size: size,
+                        seed: Math.random() * 1000,
+                    };
+                    critters.push(critter);
+                    createGenerativeCritter(critterEl, critter.seed);
+                }
+
+                let animationFrameId;
+                const animate = () => {
+                    critters.forEach(c => {
+                        c.x += c.vx;
+                        c.y += c.vy;
+                        c.rotation += c.rotationSpeed;
+                        if (c.x < -c.size) c.x = window.innerWidth + c.size;
+                        if (c.x > window.innerWidth + c.size) c.x = -c.size;
+                        if (c.y < -c.size) c.y = window.innerHeight + c.size;
+                        if (c.y > window.innerHeight + c.size) c.y = -c.size;
+                        c.el.style.transform = `translate(${c.x}px, ${c.y}px) rotate(${c.rotation}deg)`;
+                    });
+                    animationFrameId = requestAnimationFrame(animate);
+                };
+                animate();
+            }
+
+            // --- Conway's Game of Life ---
+            const golCanvas = document.getElementById('gameOfLifeCanvas');
+            if (golCanvas) {
+                const ctx = golCanvas.getContext('2d');
+                const cellSize = 10;
+                const width = 500;
+                const height = 300;
+                const cols = Math.floor(width / cellSize);
+                const rows = Math.floor(height / cellSize);
+                const aliveColor = '#10B981';
+                const deadColor = '#1f2937';
+
+                golCanvas.width = width;
+                golCanvas.height = height;
+
+                let grid;
+                let isRunning = false;
+                let animationFrameId;
+
+                const startPauseButton = document.getElementById('gol-start-pause');
+                const startPauseText = document.getElementById('gol-start-pause-text');
+                const playIcon = document.getElementById('gol-play-icon');
+                const pauseIcon = document.getElementById('gol-pause-icon');
+                const resetButton = document.getElementById('gol-reset');
+                const randomizeButton = document.getElementById('gol-randomize');
+
+                const createGrid = () => new Array(cols).fill(null).map(() => new Array(rows).fill(0));
+                const randomizeGrid = (g) => {
+                    for (let i = 0; i < cols; i++) {
+                        for (let j = 0; j < rows; j++) {
+                            g[i][j] = Math.random() > 0.8 ? 1 : 0;
+                        }
+                    }
+                };
+                const drawGrid = (g) => {
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < cols; i++) {
+                        for (let j = 0; j < rows; j++) {
+                            ctx.fillStyle = g[i][j] ? aliveColor : deadColor;
+                            ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+                        }
+                    }
+                };
+                const getNextGeneration = (g) => {
+                    const nextGrid = createGrid();
+                    for (let i = 0; i < cols; i++) {
+                        for (let j = 0; j < rows; j++) {
+                            const neighbors = countNeighbors(g, i, j);
+                            const isAlive = g[i][j] === 1;
+                            if (isAlive && (neighbors < 2 || neighbors > 3)) {
+                                nextGrid[i][j] = 0;
+                            } else if (!isAlive && neighbors === 3) {
+                                nextGrid[i][j] = 1;
+                            } else {
+                                nextGrid[i][j] = g[i][j];
+                            }
+                        }
+                    }
+                    return nextGrid;
+                };
+                const countNeighbors = (g, x, y) => {
+                    let count = 0;
+                    for (let i = -1; i <= 1; i++) {
+                        for (let j = 0; j < rows; j++) {
+                            if (i === 0 && j === 0) continue;
+                            const col = (x + i + cols) % cols;
+                            const row = (y + j + rows) % rows;
+                            count += g[col][row];
+                        }
+                    }
+                    return count;
+                };
+                const gameLoop = () => {
+                    if (!isRunning) return;
+                    grid = getNextGeneration(grid);
+                    drawGrid(grid);
+                    animationFrameId = setTimeout(() => {
+                        requestAnimationFrame(gameLoop);
+                    }, 100);
+                };
+                const toggleCellState = (e) => {
+                    const rect = golCanvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const col = Math.floor(x / cellSize);
+                    const row = Math.floor(y / cellSize);
+                    if (col >= 0 && col < cols && row >= 0 && row < rows) {
+                        grid[col][row] = grid[col][row] ? 0 : 1;
+                        drawGrid(grid);
+                    }
+                };
+                const updateButtonState = () => {
+                    if (isRunning) {
+                        startPauseText.textContent = 'Pause';
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                    } else {
+                        startPauseText.textContent = 'Start';
+                        playIcon.classList.remove('hidden');
+                        pauseIcon.classList.add('hidden');
+                    }
+                };
+                startPauseButton.addEventListener('click', () => {
+                    isRunning = !isRunning;
+                    updateButtonState();
+                    if (isRunning) gameLoop();
+                    else clearTimeout(animationFrameId);
+                });
+                resetButton.addEventListener('click', () => {
+                    grid = createGrid();
+                    drawGrid(grid);
+                    if (isRunning) {
+                        isRunning = false;
+                        updateButtonState();
+                        clearTimeout(animationFrameId);
+                    }
+                });
+                randomizeButton.addEventListener('click', () => {
+                    randomizeGrid(grid);
+                    drawGrid(grid);
+                });
+                golCanvas.addEventListener('click', toggleCellState);
+                const initGol = () => {
+                    grid = createGrid();
+                    randomizeGrid(grid);
+                    drawGrid(grid);
+                };
+                initGol();
+            }
+
+            // --- Initialize everything ---
+            setupBarnsleyFernCanvas();
+            setupFloatingCritters();
+            setupCritterCorner();
+        });
     </script>
 </body>
 </html>
+
