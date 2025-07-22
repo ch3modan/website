@@ -693,7 +693,7 @@
                 const countNeighbors = (g, x, y) => {
                     let count = 0;
                     for (let i = -1; i <= 1; i++) {
-                        for (let j = 0; j < rows; j++) {
+                        for (let j = -1; j <= 1; j++) { // <-- BUG WAS HERE, NOW FIXED
                             if (i === 0 && j === 0) continue;
                             const col = (x + i + cols) % cols;
                             const row = (y + j + rows) % rows;
@@ -768,4 +768,3 @@
     </script>
 </body>
 </html>
-
