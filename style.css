@@ -1,3 +1,65 @@
+/* Apply Inter font globally */
+body {
+    font-family: 'Inter', sans-serif;
+}
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1a202c; /* gray-900 */
+}
+::-webkit-scrollbar-thumb {
+    background: #10B981; /* green-500 */
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #059669; /* green-600 */
+}
+/* Hide scrollbar for specific elements if needed, e.g., main scroll container */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Keyframe for wiggle animation */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+.animate-wiggle {
+  animation: wiggle 3s ease-in-out infinite;
+}
+
+/* Game of Life Canvas Styling */
+#gameOfLifeCanvas {
+    cursor: pointer;
+    border: 1px solid #374151; /* gray-700 */
+    border-radius: 0.5rem;
+}
+
+/* Styles from original style.css for completeness */
+.generative-critter-canvas {
+    image-rendering: pixelated; /* For crisp pixel art */
+}
+#floatingCritters {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+.floating-critter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
 /* style.css */
 
 /* Import Tailwind CSS base, components, and utilities */
