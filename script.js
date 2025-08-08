@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('floatingCritters');
         if (!container) return;
 
-        const critters = [];
+                let critters = [];
         const numCritters = 15;
 
         for (let i = 0; i < numCritters; i++) {
@@ -274,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             critterEl.className = 'floating-critter';
             critterEl.style.width = `${size}px`;
             critterEl.style.height = `${size}px`;
+                    critterEl.style.pointerEvents = 'auto';
             container.appendChild(critterEl);
 
             const critter = {
@@ -289,6 +290,23 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             critters.push(critter);
             createGenerativeCritter(critterEl, critter.seed);
+
+                    critterEl.addEventListener('click', (e) => {
+                        const rect = critterEl.getBoundingClientRect();
+                        const origin = {
+                            x: (rect.left + rect.right) / 2 / window.innerWidth,
+                            y: (rect.top + rect.bottom) / 2 / window.innerHeight
+                        };
+
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: origin
+                        });
+
+                        critterEl.remove();
+                        critters = critters.filter(c => c !== critter);
+                    });
         }
 
         let animationFrameId;
@@ -514,4 +532,29 @@ document.addEventListener('DOMContentLoaded', () => {
     setupBarnsleyFernCanvas();
     setupFloatingCritters();
     setupCritterCorner();
+
+    // --- Easter Egg ---
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+    document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiCode.length) {
+                konamiIndex = 0;
+                console.log(`
+    ,-----.
+   ,'  _  \`.
+  /   (_)   \\
+ |   .-.   |
+ |  \`---'  |
+  \\       /
+   \`.   ,'
+     \`-'
+Kweh! You found the secret Chocobo!
+`);
+            }
+        } else {
+            konamiIndex = 0;
+        }
+    });
 });
