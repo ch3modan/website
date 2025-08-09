@@ -94,61 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Critter Corner ---
-    const critterGreetings = ["Welcome to the digital ecosystem!", "Analyzing visitor data... you seem friendly.", "01001000 01100101 01101100 01101100 01101111!", "I was just generated. What are the odds?", "Greetings, carbon-based lifeform."];
-
     function setupCritterCorner() {
         const critterCornerDiv = document.getElementById('critterCorner');
         if (!critterCornerDiv) return;
 
-        let bubbleVisible = false;
-        let critterSeed = Math.random();
-        let greeting = critterGreetings[Math.floor(Math.random() * critterGreetings.length)];
-
-        const renderCritterCorner = () => {
-            critterCornerDiv.innerHTML = `
-                <div class="fixed bottom-4 right-4 z-50 flex items-end gap-3 pointer-events-none">
-                    <div id="critterBubble" class="transition-all duration-500 ${bubbleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}">
-                        <div class="relative bg-white text-gray-800 p-4 rounded-lg shadow-lg max-w-xs font-mono border-2 border-green-400 pointer-events-auto">
-                            <p class="text-sm">${greeting}</p>
-                            <div class="absolute right-0 bottom-2 transform translate-x-1/2 rotate-45 w-4 h-4 bg-white border-r-2 border-b-2 border-green-400"></div>
-                            <button id="closeCritterBubble" class="absolute top-1 right-1 text-gray-400 hover:text-gray-800" aria-label="Close greeting">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="critterCanvasContainer" class="w-24 h-24 cursor-pointer transition-transform duration-300 hover:scale-110 animate-wiggle pointer-events-auto" title="Say hi!"></div>
-                </div>
-            `;
-
-            const critterCanvasContainer = document.getElementById('critterCanvasContainer');
-            if (critterCanvasContainer) {
-                critterCanvasContainer.innerHTML = ''; // Clear previous critter
-                createGenerativeCritter(critterCanvasContainer, critterSeed);
-                critterCanvasContainer.onclick = () => {
-                    bubbleVisible = !bubbleVisible;
-                    renderCritterCorner();
-                };
-            }
-
-            const closeButton = document.getElementById('closeCritterBubble');
-            if (closeButton) {
-                closeButton.onclick = () => {
-                    bubbleVisible = false;
-                    renderCritterCorner();
-                };
-            }
-            lucide.createIcons(); // Re-create icons after DOM update
-        };
-
-        setTimeout(() => {
-            critterCornerDiv.style.display = 'block'; // Make visible
-            setTimeout(() => {
-                bubbleVisible = true;
-                renderCritterCorner();
-            }, 1000); // Delay bubble appearance
-        }, 1500); // Delay critter appearance
-
-        renderCritterCorner(); // Initial render
+        critterCornerDiv.innerHTML = `
+            <div id="seal" class="fixed bottom-4 right-4 z-50 animate-wiggle cursor-pointer transition-transform duration-300 hover:scale-110">
+                <img src="https://camp2.rectangle.zone/subwikifiles/wc2/images/thumb/9/93/Irascible_Y.png/297px-Irascible_Y.png" alt="A cute seal" style="width: 100px; height: 100px; border-radius: 50%;">
+            </div>
+        `;
     }
 
     // --- Barnsley Fern Bush Background ---
