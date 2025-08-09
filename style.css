@@ -60,6 +60,10 @@ body {
     left: 0;
 }
 
+#seal {
+    font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "Android Emoji";
+}
+
 /* style.css */
 
 /* Import Tailwind CSS base, components, and utilities */
