@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!critterCornerDiv) return;
 
         critterCornerDiv.innerHTML = `
-            <div id="seal" class="fixed bottom-4 right-4 z-50 animate-wiggle cursor-pointer transition-transform duration-300 hover:scale-110">
-                <img src="https://camp2.rectangle.zone/subwikifiles/wc2/images/thumb/9/93/Irascible_Y.png/297px-Irascible_Y.png" alt="A cute seal" style="width: 100px; height: 100px; border-radius: 50%;">
+            <div id="seal" style="position: absolute; width: 100px; height: 100px; z-index: 50;">
+                <img src="https://camp2.rectangle.zone/subwikifiles/wc2/images/thumb/9/93/Irascible_Y.png/297px-Irascible_Y.png" alt="A cute seal" style="width: 100%; height: 100%; border-radius: 50%;">
             </div>
         `;
     }
@@ -496,6 +496,61 @@ document.addEventListener('DOMContentLoaded', () => {
     setupBarnsleyFernCanvas();
     setupFloatingCritters();
     setupCritterCorner();
+    animateSeal();
+
+    function animateSeal() {
+        const seal = document.getElementById('seal');
+        if (!seal) return;
+
+        let x = window.innerWidth - 100;
+        let y = window.innerHeight - 100;
+        let angle = 0;
+        let direction = 'left';
+
+        function move() {
+            const speed = 2;
+            switch (direction) {
+                case 'left':
+                    x -= speed;
+                    if (x <= 0) {
+                        x = 0;
+                        direction = 'up';
+                    }
+                    break;
+                case 'up':
+                    y -= speed;
+                    if (y <= 0) {
+                        y = 0;
+                        direction = 'right';
+                    }
+                    break;
+                case 'right':
+                    x += speed;
+                    if (x >= window.innerWidth - 100) {
+                        x = window.innerWidth - 100;
+                        direction = 'down';
+                    }
+                    break;
+                case 'down':
+                    y += speed;
+                    if (y >= window.innerHeight - 100) {
+                        y = window.innerHeight - 100;
+                        direction = 'left';
+                    }
+                    break;
+            }
+
+            angle = (angle + 2) % 360;
+
+            seal.style.left = `${x}px`;
+            seal.style.top = `${y}px`;
+            seal.style.transform = `rotate(${angle}deg)`;
+
+            requestAnimationFrame(move);
+        }
+
+        move();
+    }
 
     // --- Easter Egg ---
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
