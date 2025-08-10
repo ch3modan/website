@@ -549,6 +549,100 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(move);
         }
 
+        seal.addEventListener('click', () => {
+            let scale = 1;
+            const interval = setInterval(() => {
+                scale += 0.1;
+                seal.style.transform = `scale(${scale}) rotate(${angle}deg)`;
+                if (scale >= 2) {
+                    clearInterval(interval);
+                    const rect = seal.getBoundingClientRect();
+                    const origin = {
+                        x: (rect.left + rect.right) / 2 / window.innerWidth,
+                        y: (rect.top + rect.bottom) / 2 / window.innerHeight
+                    };
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: origin,
+                        colors: ['#0077be', '#00a1e0', '#80d4ff', '#b3e6ff', '#e6f7ff']
+                    });
+                    seal.style.transform = `scale(1) rotate(${angle}deg)`;
+                }
+            }, 50);
+        });
+
+        let isMoving = true;
+
+        function move() {
+            if(!isMoving) return;
+            const speed = 2;
+            switch (direction) {
+                case 'left':
+                    x -= speed;
+                    if (x <= 0) {
+                        x = 0;
+                        direction = 'up';
+                    }
+                    break;
+                case 'up':
+                    y -= speed;
+                    if (y <= 0) {
+                        y = 0;
+                        direction = 'right';
+                    }
+                    break;
+                case 'right':
+                    x += speed;
+                    if (x >= window.innerWidth - 100) {
+                        x = window.innerWidth - 100;
+                        direction = 'down';
+                    }
+                    break;
+                case 'down':
+                    y += speed;
+                    if (y >= window.innerHeight - 100) {
+                        y = window.innerHeight - 100;
+                        direction = 'left';
+                    }
+                    break;
+            }
+
+            angle = (angle + 2) % 360;
+
+            seal.style.left = `${x}px`;
+            seal.style.top = `${y}px`;
+            seal.style.transform = `rotate(${angle}deg)`;
+
+            requestAnimationFrame(move);
+        }
+
+        seal.addEventListener('click', () => {
+            isMoving = false;
+            let scale = 1;
+            const interval = setInterval(() => {
+                scale += 0.1;
+                seal.style.transform = `scale(${scale}) rotate(${angle}deg)`;
+                if (scale >= 2) {
+                    clearInterval(interval);
+                    const rect = seal.getBoundingClientRect();
+                    const origin = {
+                        x: (rect.left + rect.right) / 2 / window.innerWidth,
+                        y: (rect.top + rect.bottom) / 2 / window.innerHeight
+                    };
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: origin,
+                        colors: ['#0077be', '#00a1e0', '#80d4ff', '#b3e6ff', '#e6f7ff']
+                    });
+                    seal.style.transform = `scale(1) rotate(${angle}deg)`;
+                    isMoving = true;
+                    requestAnimationFrame(move);
+                }
+            }, 50);
+        });
+
         move();
     }
 
