@@ -498,6 +498,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCritterCorner();
     animateSeal();
 
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
     function animateSeal() {
         const seal = document.getElementById('seal');
         if (!seal) return;
