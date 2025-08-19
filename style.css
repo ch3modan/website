@@ -72,6 +72,7 @@
 /* General body styling for full height and overflow */
 body {
     height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Ensure main content area takes available height and handles its own scrolling */
