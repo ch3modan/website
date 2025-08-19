@@ -68,10 +68,13 @@
 @tailwind utilities;
 
 /* Custom styles for the portfolio */
+html {
+    height: 100%;
+}
 
 /* General body styling for full height and overflow */
 body {
-    height: 100vh;
+    height: 100%;
     overflow-x: hidden;
 }
 
