@@ -291,205 +291,257 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Conway's Game of Life ---
-    const golCanvas = document.getElementById('gameOfLifeCanvas');
-    if (golCanvas) {
-        const ctx = golCanvas.getContext('2d');
-        const cellSize = 10;
-        const width = 500;
-        const height = 300;
-        const cols = Math.floor(width / cellSize);
-        const rows = Math.floor(height / cellSize);
-        const aliveColor = '#10B981';
-        const deadColor = '#1f2937';
+    class GameOfLife {
+        constructor(canvasId) {
+            this.canvas = document.getElementById(canvasId);
+            if (!this.canvas) {
+                console.error(`Canvas with id ${canvasId} not found.`);
+                return;
+            }
+            this.ctx = this.canvas.getContext('2d');
+            this.cellSize = 10;
+            this.width = 500;
+            this.height = 300;
+            this.cols = Math.floor(this.width / this.cellSize);
+            this.rows = Math.floor(this.height / this.cellSize);
+            this.aliveColor = '#10B981';
+            this.deadColor = '#1f2937';
 
-        golCanvas.width = width;
-        golCanvas.height = height;
+            this.canvas.width = this.width;
+            this.canvas.height = this.height;
 
-        let grid;
-        let isRunning = false;
-        let animationFrameId;
-        let generationCount = 0;
-        let currentRules = 'classic'; // 'classic' or 'highlife'
+            this.grid = this.createGrid();
+            this.isRunning = false;
+            this.animationFrameId = null;
+            this.generationCount = 0;
+            this.currentRules = 'classic'; // 'classic' or 'highlife'
+            this.speed = 10; // updates per second
+            this.lastUpdateTime = 0;
+            this.updateInterval = 1000 / this.speed;
 
-        const startPauseButton = document.getElementById('gol-start-pause');
-        const startPauseText = document.getElementById('gol-start-pause-text');
-        const playIcon = document.getElementById('gol-play-icon');
-        const pauseIcon = document.getElementById('gol-pause-icon');
-        const resetButton = document.getElementById('gol-reset');
-        const randomizeButton = document.getElementById('gol-randomize');
-        const generationCounter = document.getElementById('gol-generation');
-        const classicRulesButton = document.getElementById('gol-rules-classic');
-        const highlifeRulesButton = document.getElementById('gol-rules-highlife');
+            this.startPauseButton = document.getElementById('gol-start-pause');
+            this.startPauseText = document.getElementById('gol-start-pause-text');
+            this.playIcon = document.getElementById('gol-play-icon');
+            this.pauseIcon = document.getElementById('gol-pause-icon');
+            this.resetButton = document.getElementById('gol-reset');
+            this.randomizeButton = document.getElementById('gol-randomize');
+            this.generationCounter = document.getElementById('gol-generation');
+            this.classicRulesButton = document.getElementById('gol-rules-classic');
+            this.highlifeRulesButton = document.getElementById('gol-rules-highlife');
+            this.speedSlider = document.getElementById('gol-speed');
+            this.patternSelector = document.getElementById('gol-pattern');
 
+            this.init();
+        }
 
-        const createGrid = () => new Array(cols).fill(null).map(() => new Array(rows).fill(0));
+        createGrid() {
+            return new Array(this.cols).fill(null).map(() => new Array(this.rows).fill(0));
+        }
 
-        const randomizeGrid = (g) => {
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    g[i][j] = Math.random() > 0.8 ? 1 : 0;
+        randomizeGrid() {
+            for (let i = 0; i < this.cols; i++) {
+                for (let j = 0; j < this.rows; j++) {
+                    this.grid[i][j] = Math.random() > 0.8 ? 1 : 0;
                 }
             }
-        };
+        }
 
-        const setGliderGunPattern = (g) => {
-            const pattern = [
-                [24,0],[22,1],[24,1],[12,2],[13,2],[20,2],[21,2],[34,2],[35,2],[11,3],[15,3],[20,3],[21,3],[34,3],[35,3],[0,4],[1,4],[10,4],[16,4],[20,4],[21,4],[0,5],[1,5],[10,5],[14,5],[16,5],[17,5],[22,5],[24,5],[10,6],[16,6],[24,6],[11,7],[15,7],[12,8],[13,8]
-            ];
+        loadPattern(patternName) {
+            this.grid = this.createGrid();
+            const patterns = {
+                'gosper-glider-gun': [
+                    [24,0],[22,1],[24,1],[12,2],[13,2],[20,2],[21,2],[34,2],[35,2],[11,3],[15,3],[20,3],[21,3],[34,3],[35,3],[0,4],[1,4],[10,4],[16,4],[20,4],[21,4],[0,5],[1,5],[10,5],[14,5],[16,5],[17,5],[22,5],[24,5],[10,6],[16,6],[24,6],[11,7],[15,7],[12,8],[13,8]
+                ],
+                'blinker': [[1,0],[1,1],[1,2]],
+                'penta-decathlon': [[-4,-1],[-3,-1],[-2,0],[-1,-1],[0,-1],[1,-1],[2,-1],[3,0],[4,-1],[5,-1]]
+            };
+            const pattern = patterns[patternName];
+            if (!pattern) return;
+
+            const offsetX = Math.floor(this.cols / 2);
+            const offsetY = Math.floor(this.rows / 2);
+
             pattern.forEach(([x, y]) => {
-                if (x + 1 < cols && y + 3 < rows) {
-                    g[x + 1][y + 3] = 1;
+                const gridX = x + offsetX;
+                const gridY = y + offsetY;
+                if (gridX >= 0 && gridX < this.cols && gridY >= 0 && gridY < this.rows) {
+                    this.grid[gridX][gridY] = 1;
                 }
             });
-        };
+        }
 
-        const drawGrid = (g) => {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    ctx.fillStyle = g[i][j] ? aliveColor : deadColor;
-                    ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+        drawGrid() {
+            this.ctx.clearRect(0, 0, this.width, this.height);
+            this.drawFullGrid();
+        }
+
+        drawFullGrid() {
+            for (let i = 0; i < this.cols; i++) {
+                for (let j = 0; j < this.rows; j++) {
+                    this.drawCell(i, j);
                 }
             }
-        };
+        }
 
-        const getNextGeneration = (g) => {
-            const nextGrid = createGrid();
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    const neighbors = countNeighbors(g, i, j);
-                    const isAlive = g[i][j] === 1;
+        drawChangedCells(changedCells) {
+            changedCells.forEach(({ x, y }) => {
+                this.drawCell(x, y);
+            });
+        }
 
-                    if (currentRules === 'classic') {
-                        // Classic B3/S23 rules
+        drawCell(x, y) {
+            this.ctx.fillStyle = this.grid[x][y] ? this.aliveColor : this.deadColor;
+            this.ctx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+        }
+
+        getNextGeneration() {
+            const nextGrid = this.createGrid();
+            const changedCells = [];
+            for (let i = 0; i < this.cols; i++) {
+                for (let j = 0; j < this.rows; j++) {
+                    const neighbors = this.countNeighbors(i, j);
+                    const isAlive = this.grid[i][j] === 1;
+                    let nextState = this.grid[i][j];
+
+                    if (this.currentRules === 'classic') {
                         if (isAlive && (neighbors < 2 || neighbors > 3)) {
-                            nextGrid[i][j] = 0; // Dies
+                            nextState = 0;
                         } else if (!isAlive && neighbors === 3) {
-                            nextGrid[i][j] = 1; // Born
-                        } else {
-                            nextGrid[i][j] = g[i][j]; // Stays the same
+                            nextState = 1;
                         }
-                    } else if (currentRules === 'highlife') {
-                        // HighLife B36/S23 rules
+                    } else if (this.currentRules === 'highlife') {
                         if (isAlive && (neighbors < 2 || neighbors > 3)) {
-                            nextGrid[i][j] = 0; // Dies
+                            nextState = 0;
                         } else if (!isAlive && (neighbors === 3 || neighbors === 6)) {
-                            nextGrid[i][j] = 1; // Born
-                        } else {
-                            nextGrid[i][j] = g[i][j]; // Stays the same
+                            nextState = 1;
                         }
+                    }
+                    nextGrid[i][j] = nextState;
+                    if (nextState !== this.grid[i][j]) {
+                        changedCells.push({ x: i, y: j });
                     }
                 }
             }
-            return nextGrid;
-        };
+            this.grid = nextGrid;
+            return changedCells;
+        }
 
-        const countNeighbors = (g, x, y) => {
+        countNeighbors(x, y) {
             let count = 0;
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
                     if (i === 0 && j === 0) continue;
-                    const col = (x + i + cols) % cols;
-                    const row = (y + j + rows) % rows;
-                    count += g[col][row];
+                    const col = (x + i + this.cols) % this.cols;
+                    const row = (y + j + this.rows) % this.rows;
+                    count += this.grid[col][row];
                 }
             }
             return count;
-        };
+        }
 
-        const gameLoop = () => {
-            if (!isRunning) return;
-            grid = getNextGeneration(grid);
-            drawGrid(grid);
-            generationCount++;
-            generationCounter.textContent = generationCount;
-            animationFrameId = setTimeout(() => {
-                requestAnimationFrame(gameLoop);
-            }, 100);
-        };
+        gameLoop(timestamp) {
+            this.animationFrameId = requestAnimationFrame((t) => this.gameLoop(t));
+            if (!this.isRunning) return;
 
-        const toggleCellState = (e) => {
-            const rect = golCanvas.getBoundingClientRect();
+            const elapsed = timestamp - this.lastUpdateTime;
+
+            if (elapsed > this.updateInterval) {
+                this.lastUpdateTime = timestamp - (elapsed % this.updateInterval);
+                const changedCells = this.getNextGeneration();
+                this.drawChangedCells(changedCells);
+                this.generationCount++;
+                this.generationCounter.textContent = this.generationCount;
+            }
+        }
+
+        toggleCellState(e) {
+            const rect = this.canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            const col = Math.floor(x / cellSize);
-            const row = Math.floor(y / cellSize);
-            if (col >= 0 && col < cols && row >= 0 && row < rows) {
-                grid[col][row] = grid[col][row] ? 0 : 1;
-                drawGrid(grid);
-                generationCount = 0;
-                generationCounter.textContent = generationCount;
+            const col = Math.floor(x / this.cellSize);
+            const row = Math.floor(y / this.cellSize);
+            if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
+                this.grid[col][row] = this.grid[col][row] ? 0 : 1;
+                this.drawCell(col, row);
+                this.generationCount = 0;
+                this.generationCounter.textContent = this.generationCount;
             }
-        };
+        }
 
-        const updateButtonState = () => {
-            if (isRunning) {
-                startPauseText.textContent = 'Pause';
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
+        updateButtonState() {
+            if (this.isRunning) {
+                this.startPauseText.textContent = 'Pause';
+                this.playIcon.classList.add('hidden');
+                this.pauseIcon.classList.remove('hidden');
             } else {
-                startPauseText.textContent = 'Start';
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
+                this.startPauseText.textContent = 'Start';
+                this.playIcon.classList.remove('hidden');
+                this.pauseIcon.classList.add('hidden');
             }
-        };
+        }
 
-        const resetSimulation = () => {
-            grid = createGrid();
-            setGliderGunPattern(grid);
-            drawGrid(grid);
-            generationCount = 0;
-            generationCounter.textContent = generationCount;
-            if (isRunning) {
-                isRunning = false;
-                updateButtonState();
-                clearTimeout(animationFrameId);
-            }
-        };
+        resetSimulation() {
+            this.isRunning = false;
+            this.loadPattern(this.patternSelector.value);
+            this.drawGrid();
+            this.generationCount = 0;
+            this.generationCounter.textContent = this.generationCount;
+            this.updateButtonState();
+        }
 
-        startPauseButton.addEventListener('click', () => {
-            isRunning = !isRunning;
-            updateButtonState();
-            if (isRunning) gameLoop();
-            else clearTimeout(animationFrameId);
-        });
+        init() {
+            this.startPauseButton.addEventListener('click', () => {
+                this.isRunning = !this.isRunning;
+                this.updateButtonState();
+            });
 
-        resetButton.addEventListener('click', resetSimulation);
+            this.resetButton.addEventListener('click', () => this.resetSimulation());
 
-        randomizeButton.addEventListener('click', () => {
-            grid = createGrid();
-            randomizeGrid(grid);
-            drawGrid(grid);
-            generationCount = 0;
-            generationCounter.textContent = generationCount;
-        });
+            this.randomizeButton.addEventListener('click', () => {
+                this.isRunning = false;
+                this.grid = this.createGrid();
+                this.randomizeGrid();
+                this.drawGrid();
+                this.generationCount = 0;
+                this.generationCounter.textContent = this.generationCount;
+                this.updateButtonState();
+            });
 
-        classicRulesButton.addEventListener('click', () => {
-            currentRules = 'classic';
-            classicRulesButton.classList.add('bg-green-600', 'text-white');
-            classicRulesButton.classList.remove('text-gray-400');
-            highlifeRulesButton.classList.remove('bg-green-600', 'text-white');
-            highlifeRulesButton.classList.add('text-gray-400');
-            resetSimulation();
-        });
+            this.classicRulesButton.addEventListener('click', () => {
+                this.currentRules = 'classic';
+                this.classicRulesButton.classList.add('bg-green-600', 'text-white');
+                this.classicRulesButton.classList.remove('text-gray-400');
+                this.highlifeRulesButton.classList.remove('bg-green-600', 'text-white');
+                this.highlifeRulesButton.classList.add('text-gray-400');
+                this.resetSimulation();
+            });
 
-        highlifeRulesButton.addEventListener('click', () => {
-            currentRules = 'highlife';
-            highlifeRulesButton.classList.add('bg-green-600', 'text-white');
-            highlifeRulesButton.classList.remove('text-gray-400');
-            classicRulesButton.classList.remove('bg-green-600', 'text-white');
-            classicRulesButton.classList.add('text-gray-400');
-            resetSimulation();
-        });
+            this.highlifeRulesButton.addEventListener('click', () => {
+                this.currentRules = 'highlife';
+                this.highlifeRulesButton.classList.add('bg-green-600', 'text-white');
+                this.highlifeRulesButton.classList.remove('text-gray-400');
+                this.classicRulesButton.classList.remove('bg-green-600', 'text-white');
+                this.classicRulesButton.classList.add('text-gray-400');
+                this.resetSimulation();
+            });
 
-        golCanvas.addEventListener('click', toggleCellState);
+            this.canvas.addEventListener('click', (e) => this.toggleCellState(e));
 
-        const initGol = () => {
-            grid = createGrid();
-            setGliderGunPattern(grid);
-            drawGrid(grid);
-        };
-        initGol();
+            this.speedSlider.addEventListener('input', (e) => {
+                this.speed = parseInt(e.target.value, 10);
+                this.updateInterval = 1000 / this.speed;
+            });
+
+            this.patternSelector.addEventListener('change', () => this.resetSimulation());
+
+            this.loadPattern(this.patternSelector.value);
+            this.drawGrid();
+            this.gameLoop(0);
+        }
+    }
+
+    if (document.getElementById('gameOfLifeCanvas')) {
+        new GameOfLife('gameOfLifeCanvas');
     }
 
     // --- Initialize everything ---
