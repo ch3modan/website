@@ -196,6 +196,18 @@
                         <button id="gol-rules-classic" class="text-xs font-medium py-1 px-3 rounded-full bg-green-600 text-white">Classic</button>
                         <button id="gol-rules-highlife" class="text-xs font-medium py-1 px-3 rounded-full text-gray-400">HighLife</button>
                     </div>
+                    <div class="flex items-center gap-2 text-sm font-mono text-gray-400">
+                        <span>Pattern:</span>
+                        <select id="gol-pattern" class="bg-gray-800 border border-gray-700 rounded-full py-1 px-2 text-xs text-white">
+                            <option value="gosper-glider-gun">Gosper Glider Gun</option>
+                            <option value="blinker">Blinker</option>
+                            <option value="penta-decathlon">Penta-decathlon</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm font-mono text-gray-400">
+                        <span>Speed:</span>
+                        <input type="range" id="gol-speed" min="1" max="30" value="10" class="w-24">
+                    </div>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-center items-center gap-4">
                     <button id="gol-start-pause" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full transition-all duration-200 shadow-lg shadow-green-500/20 flex items-center gap-2">
