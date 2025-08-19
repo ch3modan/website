@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isScrolled = false;
     let activeSection = 'home';
+    let isPaused = false;
 
     const handleScroll = () => {
         // Header scroll effect
@@ -48,7 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (scrollContainer) {
-        scrollContainer.addEventListener('scroll', handleScroll);
+        let scrollTimeout;
+        scrollContainer.addEventListener('scroll', () => {
+            handleScroll();
+            isPaused = true;
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                isPaused = false;
+            }, 150);
+        });
         handleScroll();
     }
 
@@ -202,13 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const render = () => {
-            ferns.forEach(fern => {
-                // Draw a batch of points for each fern per frame for performance
-                for (let i = 0; i < 25; i++) {
-                    drawPoint(fern);
-                    nextPoint(fern);
-                }
-            });
+            if (!isPaused) {
+                ferns.forEach(fern => {
+                    // Draw a batch of points for each fern per frame for performance
+                    for (let i = 0; i < 25; i++) {
+                        drawPoint(fern);
+                        nextPoint(fern);
+                    }
+                });
+            }
             animationFrameId = requestAnimationFrame(render);
         };
         render();
@@ -275,16 +286,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let animationFrameId;
         const animate = () => {
-            critters.forEach(c => {
-                c.x += c.vx;
-                c.y += c.vy;
-                c.rotation += c.rotationSpeed;
-                if (c.x < -c.size) c.x = window.innerWidth + c.size;
-                if (c.x > window.innerWidth + c.size) c.x = -c.size;
-                if (c.y < -c.size) c.y = window.innerHeight + c.size;
-                if (c.y > window.innerHeight + c.size) c.y = -c.size;
-                c.el.style.transform = `translate(${c.x}px, ${c.y}px) rotate(${c.rotation}deg)`;
-            });
+            if (!isPaused) {
+                critters.forEach(c => {
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    c.rotation += c.rotationSpeed;
+                    if (c.x < -c.size) c.x = window.innerWidth + c.size;
+                    if (c.x > window.innerWidth + c.size) c.x = -c.size;
+                    if (c.y < -c.size) c.y = window.innerHeight + c.size;
+                    if (c.y > window.innerHeight + c.size) c.y = -c.size;
+                    c.el.style.transform = `translate(${c.x}px, ${c.y}px) rotate(${c.rotation}deg)`;
+                });
+            }
             animationFrameId = requestAnimationFrame(animate);
         };
         animate();
@@ -567,10 +580,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let y = window.innerHeight - 100;
         let angle = 0;
         let direction = 'left';
-        let isMoving = true;
-
         function move() {
-            if (!isMoving) {
+            if (isPaused) {
                 requestAnimationFrame(move);
                 return;
             }
@@ -616,7 +627,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         seal.addEventListener('click', () => {
-            isMoving = false;
             let scale = 1;
             const interval = setInterval(() => {
                 scale += 0.1;
@@ -635,7 +645,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         colors: ['#0077be', '#00a1e0', '#80d4ff', '#b3e6ff', '#e6f7ff']
                     });
                     seal.style.transform = `scale(1) rotate(${angle}deg)`;
-                    isMoving = true;
                 }
             }, 50);
         });
