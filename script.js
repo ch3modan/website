@@ -2,6 +2,19 @@
 lucide.createIcons();
 
 document.addEventListener('DOMContentLoaded', () => {
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        }
+    }
+
     // --- Main App Logic from original script.js ---
     const mainHeader = document.getElementById('mainHeader');
     const scrollContainer = document.getElementById('scrollContainer');
@@ -50,14 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (scrollContainer) {
         let scrollTimeout;
-        scrollContainer.addEventListener('scroll', () => {
+        const throttledScrollHandler = throttle(() => {
             handleScroll();
             isPaused = true;
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 isPaused = false;
             }, 150);
-        });
+        }, 100);
+        scrollContainer.addEventListener('scroll', throttledScrollHandler);
         handleScroll();
     }
 
