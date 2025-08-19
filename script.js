@@ -586,7 +586,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     // --- Easter Egg ---
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     let konamiIndex = 0;
