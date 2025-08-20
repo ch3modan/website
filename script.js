@@ -116,18 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Critter Corner ---
-    function setupCritterCorner() {
-        const critterCornerDiv = document.getElementById('critterCorner');
-        if (!critterCornerDiv) return;
-
-        critterCornerDiv.innerHTML = `
-            <div id="seal" style="position: absolute; width: 100px; height: 100px; z-index: 50;">
-                <img src="https://camp2.rectangle.zone/subwikifiles/wc2/images/thumb/9/93/Irascible_Y.png/297px-Irascible_Y.png" alt="A cute seal" style="width: 100%; height: 100%; border-radius: 50%;">
-            </div>
-        `;
-    }
-
     // --- Barnsley Fern Bush Background ---
     function setupBarnsleyFernCanvas() {
         const canvas = document.getElementById('barnsleyFernCanvas');
@@ -571,11 +559,82 @@ document.addEventListener('DOMContentLoaded', () => {
         new GameOfLife('gameOfLifeCanvas');
     }
 
+    function setupDraggableSeal() {
+        const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint } = Matter;
+
+        const critterCorner = document.getElementById('critterCorner');
+        if (!critterCorner) return;
+
+        const engine = Engine.create({
+            gravity: { y: 0.3 }
+        });
+        const world = engine.world;
+
+        const render = Render.create({
+            element: critterCorner,
+            engine: engine,
+            options: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                wireframes: false,
+                background: 'transparent'
+            }
+        });
+        render.canvas.style.position = 'absolute';
+        render.canvas.style.top = '0';
+        render.canvas.style.left = '0';
+        render.canvas.style.pointerEvents = 'none';
+
+
+        const sealBody = Bodies.circle(150, 50, 50, {
+            restitution: 0.5,
+            render: {
+                sprite: {
+                    texture: 'https://camp2.rectangle.zone/subwikifiles/wc2/images/thumb/9/93/Irascible_Y.png/297px-Irascible_Y.png',
+                    xScale: 0.34,
+                    yScale: 0.34
+                }
+            }
+        });
+
+        const ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight + 25, window.innerWidth, 50, { isStatic: true });
+        const wallLeft = Bodies.rectangle(-25, window.innerHeight / 2, 50, window.innerHeight, { isStatic: true });
+        const wallRight = Bodies.rectangle(window.innerWidth + 25, window.innerHeight / 2, 50, window.innerHeight, { isStatic: true });
+
+
+        World.add(world, [ground, wallLeft, wallRight, sealBody]);
+
+        const mouse = Mouse.create(render.canvas);
+        const mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false
+                }
+            }
+        });
+
+        World.add(world, mouseConstraint);
+        render.mouse = mouse;
+
+        Render.run(render);
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+
+        window.addEventListener('resize', () => {
+            render.canvas.width = window.innerWidth;
+            render.canvas.height = window.innerHeight;
+            Matter.Body.setPosition(ground, { x: window.innerWidth / 2, y: window.innerHeight + 25 });
+            Matter.Body.setPosition(wallLeft, { x: -25, y: window.innerHeight / 2 });
+            Matter.Body.setPosition(wallRight, { x: window.innerWidth + 25, y: window.innerHeight / 2 });
+        });
+    }
+
     // --- Initialize everything ---
     setupBarnsleyFernCanvas();
     setupFloatingCritters();
-    setupCritterCorner();
-    animateSeal();
+    setupDraggableSeal();
 
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -584,87 +643,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-    }
-
-    function animateSeal() {
-        const seal = document.getElementById('seal');
-        if (!seal) return;
-
-        let x = window.innerWidth - 100;
-        let y = window.innerHeight - 100;
-        let angle = 0;
-        let direction = 'left';
-
-        function move() {
-            if (isPaused) {
-                requestAnimationFrame(move);
-                return;
-            }
-            const speed = 2;
-            switch (direction) {
-                case 'left':
-                    x -= speed;
-                    if (x <= 0) {
-                        x = 0;
-                        direction = 'up';
-                    }
-                    break;
-                case 'up':
-                    y -= speed;
-                    if (y <= 0) {
-                        y = 0;
-                        direction = 'right';
-                    }
-                    break;
-                case 'right':
-                    x += speed;
-                    if (x >= window.innerWidth - 100) {
-                        x = window.innerWidth - 100;
-                        direction = 'down';
-                    }
-                    break;
-                case 'down':
-                    y += speed;
-                    if (y >= window.innerHeight - 100) {
-                        y = window.innerHeight - 100;
-                        direction = 'left';
-                    }
-                    break;
-            }
-
-            angle = (angle + 2) % 360;
-
-            seal.style.left = `${x}px`;
-            seal.style.top = `${y}px`;
-            seal.style.transform = `rotate(${angle}deg)`;
-
-            requestAnimationFrame(move);
-        }
-
-        seal.addEventListener('click', () => {
-            let scale = 1;
-            const interval = setInterval(() => {
-                scale += 0.1;
-                seal.style.transform = `scale(${scale}) rotate(${angle}deg)`;
-                if (scale >= 2) {
-                    clearInterval(interval);
-                    const rect = seal.getBoundingClientRect();
-                    const origin = {
-                        x: (rect.left + rect.right) / 2 / window.innerWidth,
-                        y: (rect.top + rect.bottom) / 2 / window.innerHeight
-                    };
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: origin,
-                        colors: ['#0077be', '#00a1e0', '#80d4ff', '#b3e6ff', '#e6f7ff']
-                    });
-                    seal.style.transform = `scale(1) rotate(${angle}deg)`;
-                }
-            }, 50);
-        });
-
-        move();
     }
 
     // --- Easter Egg ---
