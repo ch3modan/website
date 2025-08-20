@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             critterEl.className = 'floating-critter';
             critterEl.style.width = `${size}px`;
             critterEl.style.height = `${size}px`;
-            critterEl.style.pointerEvents = 'auto';
+            critterEl.style.pointerEvents = 'none'; // Disabled to prevent interference with other UI elements
             container.appendChild(critterEl);
 
             const critter = {
@@ -600,46 +600,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         World.add(world, [ground, wallLeft, wallRight, sealBody]);
 
-        const mouse = Mouse.create(render.canvas);
-        const mouseConstraint = MouseConstraint.create(engine, {
-            mouse: mouse,
-            constraint: {
-                stiffness: 0.2,
-                render: {
-                    visible: false
-                }
-            }
-        });
-
-        World.add(world, mouseConstraint);
-        render.mouse = mouse;
-
+        let draggedBody = null;
         let isDragging = false;
         let startDragPos = { x: 0, y: 0 };
 
-        Matter.Events.on(mouseConstraint, 'mousedown', function(event) {
-            isDragging = false;
-            startDragPos = { x: event.mouse.position.x, y: event.mouse.position.y };
-        });
-
-        Matter.Events.on(mouseConstraint, 'mousemove', function(event) {
-            const dx = Math.abs(event.mouse.position.x - startDragPos.x);
-            const dy = Math.abs(event.mouse.position.y - startDragPos.y);
-            if (dx > 5 || dy > 5) {
+        window.addEventListener('mousedown', (e) => {
+            const mousePosition = { x: e.clientX, y: e.clientY };
+            const bodies = Matter.Query.point([sealBody], mousePosition);
+            if (bodies.length > 0) {
+                draggedBody = bodies[0];
                 isDragging = true;
+                startDragPos = mousePosition;
+                Matter.Body.setStatic(draggedBody, true);
             }
         });
 
-        Matter.Events.on(mouseConstraint, 'mouseup', function(event) {
-            if (!isDragging && mouseConstraint.body === sealBody) {
-                Matter.Body.applyForce(sealBody, sealBody.position, { x: 0, y: -0.1 * sealBody.mass });
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging && draggedBody) {
+                const mousePosition = { x: e.clientX, y: e.clientY };
+                const dx = Math.abs(mousePosition.x - startDragPos.x);
+                const dy = Math.abs(mousePosition.y - startDragPos.y);
+
+                if (dx > 5 || dy > 5) {
+                    const scrollContainer = document.getElementById('scrollContainer');
+                    if (scrollContainer) {
+                        scrollContainer.style.overflowY = 'hidden';
+                    }
+                }
+
+                Matter.Body.setPosition(draggedBody, mousePosition);
             }
-            isDragging = false;
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isDragging && draggedBody) {
+                const mousePosition = { x: e.clientX, y: e.clientY };
+                const dx = Math.abs(mousePosition.x - startDragPos.x);
+                const dy = Math.abs(mousePosition.y - startDragPos.y);
+
+                Matter.Body.setStatic(draggedBody, false);
+
+                if (dx <= 5 && dy <= 5) {
+                    // It's a click, not a drag
+                    Matter.Body.applyForce(draggedBody, draggedBody.position, { x: 0, y: -0.1 * draggedBody.mass });
+                }
+
+                draggedBody = null;
+                isDragging = false;
+
+                const scrollContainer = document.getElementById('scrollContainer');
+                if (scrollContainer) {
+                    scrollContainer.style.overflowY = 'auto';
+                }
+            }
         });
 
         Render.run(render);
         const runner = Runner.create();
         Runner.run(runner, engine);
+
+        render.canvas.style.pointerEvents = 'none';
 
         window.addEventListener('resize', () => {
             render.canvas.width = window.innerWidth;
@@ -647,13 +667,6 @@ document.addEventListener('DOMContentLoaded', () => {
             Matter.Body.setPosition(ground, { x: window.innerWidth / 2, y: window.innerHeight + 25 });
             Matter.Body.setPosition(wallLeft, { x: -25, y: window.innerHeight / 2 });
             Matter.Body.setPosition(wallRight, { x: window.innerWidth + 25, y: window.innerHeight / 2 });
-        });
-
-        render.canvas.addEventListener('wheel', (event) => {
-            const scrollContainer = document.getElementById('scrollContainer');
-            if (scrollContainer) {
-                scrollContainer.scrollTop += event.deltaY;
-            }
         });
     }
 
