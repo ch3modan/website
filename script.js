@@ -580,10 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 background: 'transparent'
             }
         });
-        render.canvas.style.position = 'absolute';
-        render.canvas.style.top = '0';
-        render.canvas.style.left = '0';
-        render.canvas.style.pointerEvents = 'none';
 
 
         const sealBody = Bodies.circle(150, 50, 50, {
@@ -617,6 +613,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         World.add(world, mouseConstraint);
         render.mouse = mouse;
+
+        let isDragging = false;
+        let startDragPos = { x: 0, y: 0 };
+
+        Matter.Events.on(mouseConstraint, 'mousedown', function(event) {
+            isDragging = false;
+            startDragPos = { x: event.mouse.position.x, y: event.mouse.position.y };
+        });
+
+        Matter.Events.on(mouseConstraint, 'mousemove', function(event) {
+            const dx = Math.abs(event.mouse.position.x - startDragPos.x);
+            const dy = Math.abs(event.mouse.position.y - startDragPos.y);
+            if (dx > 5 || dy > 5) {
+                isDragging = true;
+            }
+        });
+
+        Matter.Events.on(mouseConstraint, 'mouseup', function(event) {
+            if (!isDragging && mouseConstraint.body === sealBody) {
+                Matter.Body.applyForce(sealBody, sealBody.position, { x: 0, y: -0.1 * sealBody.mass });
+            }
+            isDragging = false;
+        });
 
         Render.run(render);
         const runner = Runner.create();

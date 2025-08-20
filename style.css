@@ -56,6 +56,13 @@
     left: 0;
 }
 
+#critterCorner canvas {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
 #seal {
     font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "Android Emoji";
 }
@@ -76,6 +83,7 @@ html {
 body {
     height: 100%;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 /* Ensure main content area takes available height and handles its own scrolling */
