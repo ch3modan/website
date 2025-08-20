@@ -648,6 +648,13 @@ document.addEventListener('DOMContentLoaded', () => {
             Matter.Body.setPosition(wallLeft, { x: -25, y: window.innerHeight / 2 });
             Matter.Body.setPosition(wallRight, { x: window.innerWidth + 25, y: window.innerHeight / 2 });
         });
+
+        render.canvas.addEventListener('wheel', (event) => {
+            const scrollContainer = document.getElementById('scrollContainer');
+            if (scrollContainer) {
+                scrollContainer.scrollTop += event.deltaY;
+            }
+        });
     }
 
     // --- Initialize everything ---

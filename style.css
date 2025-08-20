@@ -83,7 +83,6 @@ html {
 body {
     height: 100%;
     overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 /* Ensure main content area takes available height and handles its own scrolling */
